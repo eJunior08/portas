@@ -1,25 +1,26 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { Provider } from 'react-redux';
+import { ApolloProvider } from '@apollo/client';
+
+import client from './services/api';
+
+/* Routes */
+import Routes from './routes';
+
+/* Store */
+import { store } from './redux';
+
+/* Styles */
+import GlobalStyles from './styles/GlobalStyles';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <ApolloProvider client={client}>
+      <Provider store={store}>
+        <Routes />
+        <GlobalStyles />
+      </Provider>
+    </ApolloProvider>
   );
 }
 
