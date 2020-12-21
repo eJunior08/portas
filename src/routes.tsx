@@ -12,6 +12,19 @@ import LoginPage from './pages/LoginPage';
 import ManageDoors from './pages/ManageDoors';
 import Organization from './pages/Signup/Organization';
 
+const PrivateRouteClient = ({ component: Component, ...rest }: any) => {
+  function handleRender(props: any) {
+    const component = <Component {...props} />;
+    const role = Number(localStorage.getItem('role')?.toString());
+
+    if (role === 0) {
+      return component;
+    }
+  }
+
+  return <Route {...rest} render={handleRender} />;
+};
+
 const Routes: React.FC = () => {
   return (
     <BrowserRouter>
@@ -26,8 +39,8 @@ const Routes: React.FC = () => {
       <Route path="/sign-up-credentials" component={Credentials} />
       <Route path="/finished" component={Finished} />
 
-      <Route path="/dashboard" component={Dashboard} />
-      <Route path="/doors" component={ManageDoors} />
+      <PrivateRouteClient path="/dashboard" component={Dashboard} />
+      <PrivateRouteClient path="/doors" component={ManageDoors} />
     </BrowserRouter>
   );
 };

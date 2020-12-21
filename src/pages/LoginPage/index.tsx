@@ -1,13 +1,13 @@
-import React from "react";
-import { Formik } from "formik";
-import { gql, useMutation } from "@apollo/client";
-import { Link } from "react-router-dom";
+import React from 'react';
+import { Formik } from 'formik';
+import { gql, useMutation } from '@apollo/client';
+import { Link, useHistory } from 'react-router-dom';
 
 /* Components */
-import Input from "../../components/Form/Input";
+import Input from '../../components/Form/Input';
 
 /* Interfaces */
-import { LoginForm } from "../../interfaces/LoginPage/LoginForm";
+import { LoginForm } from '../../interfaces/LoginPage/LoginForm';
 
 /* Styles */
 import {
@@ -19,14 +19,14 @@ import {
   LegendContainer,
   PageHeader,
   TitleHeader,
-} from "./styles";
+} from './styles';
 
 /* Validator */
-import { LoginValidator } from "../../validators/Form/login.validator";
+import { LoginValidator } from '../../validators/Form/login.validator';
 
 const LOGIN = gql`
   mutation {
-    login(password: "12345678", email: "elson.junior9@hotmail.com") {
+    login(password: "12345678", email: "wemovil590@chatdays.com") {
       accessToken
       message
       sucess
@@ -36,23 +36,26 @@ const LOGIN = gql`
 `;
 
 const LoginPage: React.FC = () => {
+  const history = useHistory();
   const [login /* , { data } */] = useMutation(LOGIN);
 
-  const initialValues: LoginForm = { email: "", password: "" };
+  const initialValues: LoginForm = { email: '', password: '' };
 
   async function handleSubmit() {
     const response = await login();
 
     if (response.data.login.sucess) {
       // TODO: SALVAR TOKEN
-      const { accessToken } = response.data.login;
-      console.log("accessToken", accessToken);
-      localStorage.setItem("token", accessToken);
+      const { accessToken, userRole } = response.data.login;
+      console.log('accessToken', accessToken);
+      localStorage.setItem('token', accessToken);
+      localStorage.setItem('role', userRole);
+      history.push('dashboard');
     } else {
-      console.log("Erro: ", response.data.login.message);
+      console.log('Erro: ', response.data.login.message);
     }
 
-    console.log("response", response);
+    console.log('response', response);
   }
 
   return (
@@ -61,7 +64,11 @@ const LoginPage: React.FC = () => {
         <TitleHeader>Projeto Portas</TitleHeader>
       </PageHeader>
 
-      <Formik initialValues={initialValues} validationSchema={LoginValidator} onSubmit={handleSubmit}>
+      <Formik
+        initialValues={initialValues}
+        validationSchema={LoginValidator}
+        onSubmit={handleSubmit}
+      >
         <FormContainer>
           <LegendContainer>
             <Legend>Fazer Login</Legend>

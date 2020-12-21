@@ -1,14 +1,30 @@
-import React from "react";
+import { gql, useQuery } from '@apollo/client';
+import React from 'react';
 
 /* Components */
 // import PageTitle from "../../components/PageTitle";
-import SmallCard from "../../components/Cards/SmallCard";
+import SmallCard from '../../components/Cards/SmallCard';
 // import SmallHeader from "../../components/Headers/SmallHeader";
 
 /* Styles */
-import { ButtonStyled, Container, DoorsContainer } from "./styles";
+import { ButtonStyled, Container, DoorsContainer } from './styles';
+
+const DOORS = gql`
+  query {
+    getDoor {
+      sucess
+      data {
+        name
+      }
+    }
+  }
+`;
 
 const ManageDoors: React.FC = () => {
+  const { loading, error, data } = useQuery(DOORS);
+
+  console.log('loading', loading);
+  console.log('data', data);
   return (
     <>
       {/* <SmallHeader title="" /> */}
