@@ -1,13 +1,13 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { Formik } from 'formik';
-import { gql, useMutation } from '@apollo/client';
+import React from "react";
+import { Formik } from "formik";
+import { gql, useMutation } from "@apollo/client";
+import { Link } from "react-router-dom";
 
 /* Components */
-import Input from '../../components/Form/Input';
+import Input from "../../components/Form/Input";
 
 /* Interfaces */
-import { LoginForm } from '../../interfaces/LoginPage/LoginForm';
+import { LoginForm } from "../../interfaces/LoginPage/LoginForm";
 
 /* Styles */
 import {
@@ -19,7 +19,10 @@ import {
   LegendContainer,
   PageHeader,
   TitleHeader,
-} from './styles';
+} from "./styles";
+
+/* Validator */
+import { LoginValidator } from "../../validators/Form/login.validator";
 
 const LOGIN = gql`
   mutation {
@@ -35,7 +38,7 @@ const LOGIN = gql`
 const LoginPage: React.FC = () => {
   const [login /* , { data } */] = useMutation(LOGIN);
 
-  const initialValues: LoginForm = { email: '', password: '' };
+  const initialValues: LoginForm = { email: "", password: "" };
 
   async function handleSubmit() {
     const response = await login();
@@ -43,13 +46,13 @@ const LoginPage: React.FC = () => {
     if (response.data.login.sucess) {
       // TODO: SALVAR TOKEN
       const { accessToken } = response.data.login;
-      console.log('accessToken', accessToken);
-      localStorage.setItem('token', accessToken);
+      console.log("accessToken", accessToken);
+      localStorage.setItem("token", accessToken);
     } else {
-      console.log('Erro: ', response.data.login.message);
+      console.log("Erro: ", response.data.login.message);
     }
 
-    console.log('response', response);
+    console.log("response", response);
   }
 
   return (
@@ -58,7 +61,7 @@ const LoginPage: React.FC = () => {
         <TitleHeader>Projeto Portas</TitleHeader>
       </PageHeader>
 
-      <Formik initialValues={initialValues} onSubmit={handleSubmit}>
+      <Formik initialValues={initialValues} validationSchema={LoginValidator} onSubmit={handleSubmit}>
         <FormContainer>
           <LegendContainer>
             <Legend>Fazer Login</Legend>

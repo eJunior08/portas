@@ -6,8 +6,10 @@ import Address from './pages/Signup/Address';
 import ChooseType from './pages/Signup/ChooseType';
 import CommonUser from './pages/Signup/CommonUser';
 import Credentials from './pages/Signup/Credentials';
+import Dashboard from './pages/Dashboard';
 import Finished from './pages/Finished';
 import LoginPage from './pages/LoginPage';
+import ManageDoors from './pages/ManageDoors';
 import Organization from './pages/Signup/Organization';
 
 const Routes: React.FC = () => {
@@ -23,6 +25,9 @@ const Routes: React.FC = () => {
 
       <Route path="/sign-up-credentials" component={Credentials} />
       <Route path="/finished" component={Finished} />
+
+      <Route path="/dashboard" component={Dashboard} />
+      <Route path="/doors" component={ManageDoors} />
     </BrowserRouter>
   );
 };
