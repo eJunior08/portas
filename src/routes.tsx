@@ -76,6 +76,19 @@ const PrivateRoutes: React.FC = () => {
   );
 };
 
+const PrivateRouteClient = ({ component: Component, ...rest }: any) => {
+  function handleRender(props: any) {
+    const component = <Component {...props} />;
+    const role = Number(localStorage.getItem("role")?.toString());
+
+    if (role === 0) {
+      return component;
+    }
+  }
+
+  return <Route {...rest} render={handleRender} />;
+};
+
 const Routes: React.FC = () => {
   return (
     <BrowserRouter>

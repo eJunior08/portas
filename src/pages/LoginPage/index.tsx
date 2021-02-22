@@ -37,8 +37,9 @@ const LOGIN = gql`
 `;
 
 const LoginPage: React.FC = () => {
-  const [login /* , { data } */] = useMutation(LOGIN);
   const history = useHistory();
+  const [login /* , { data } */] = useMutation(LOGIN);
+  // const history = useHistory();
 
   const [isOpen, setIsOpen] = useState(false);
 
