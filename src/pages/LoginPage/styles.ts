@@ -1,5 +1,5 @@
-import styled from 'styled-components';
-import { Form } from 'formik';
+import styled from "styled-components";
+import { Form } from "formik";
 
 export const Container = styled.div`
   /* background: red; */
@@ -10,6 +10,10 @@ export const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+
+  @media (min-width: 1000px) {
+    flex-direction: row;
+  }
 `;
 
 export const PageHeader = styled.div`
@@ -25,6 +29,11 @@ export const PageHeader = styled.div`
 
   border-bottom-left-radius: 1.5rem;
   border-bottom-right-radius: 1.5rem;
+
+  @media (min-width: 1000px) {
+    height: 100vh;
+    border-radius: 0;
+  }
 `;
 
 export const TitleHeader = styled.h2`
@@ -48,6 +57,12 @@ export const FormContainer = styled(Form)`
   padding-bottom: 5rem;
 
   flex: 1;
+
+  @media (min-width: 1000px) {
+    max-width: min(45vw, 750px);
+    margin-top: 0;
+    padding-bottom: 0;
+  }
 `;
 
 export const LegendContainer = styled.div`
@@ -62,10 +77,18 @@ export const LegendContainer = styled.div`
   & > a {
     font-size: 1.3rem;
   }
+
+  @media (min-width: 1000px) {
+    max-width: min(45vw, 750px);
+  }
 `;
 
 export const Legend = styled.legend`
   font: 400 2.4rem Poppins;
+
+  /* @media (min-width: 1000px) {
+    max-width: min(45vw, 750px);
+  } */
 `;
 
 export const InputGroup = styled.div`
@@ -78,6 +101,10 @@ export const InputGroup = styled.div`
 
   padding: 0 5rem;
   margin-top: 2.4rem;
+
+  @media (min-width: 1000px) {
+    max-width: min(45vw, 750px);
+  }
 `;
 
 export const Button = styled.button`
@@ -89,6 +116,7 @@ export const Button = styled.button`
   width: 100%;
 
   padding: 1.6rem 7rem;
+  margin-top: 5rem;
 
   border-radius: 1000px;
 
@@ -98,5 +126,9 @@ export const Button = styled.button`
 
   &:hover {
     background-color: var(--color-secondary-light);
+  }
+
+  &:disabled {
+    opacity: 0.7;
   }
 `;

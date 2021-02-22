@@ -1,4 +1,5 @@
-import React from 'react';
+import React from "react";
+import { useHistory } from "react-router-dom";
 
 /* Styles */
 import {
@@ -9,16 +10,30 @@ import {
   Description,
   HeaderContent,
   PageHeader,
+  ReturnIconStyled,
   Subtitle,
   Title,
   TopBar,
-} from './styles';
+} from "./styles";
 
 const ChooseType: React.FC = () => {
+  const history = useHistory();
+
+  function handleBack() {
+    console.log("back");
+    history.goBack();
+  }
+
+  function handleLink(link: string) {
+    history.push(link);
+  }
+
   return (
     <Container>
       <PageHeader>
-        <TopBar>Voltar</TopBar>
+        <TopBar>
+          <ReturnIconStyled onClick={handleBack} />
+        </TopBar>
 
         <HeaderContent>
           <Title>Crie sua conta agora</Title>
@@ -30,9 +45,15 @@ const ChooseType: React.FC = () => {
         <Subtitle>01. Você é...</Subtitle>
 
         <ButtonsContainer>
-          <ButtonType>Usuário comum</ButtonType>
-          <ButtonType>Técnico de uma empresa</ButtonType>
-          <ButtonType>Empresa técnica</ButtonType>
+          <ButtonType onClick={() => handleLink("sign-up-common-user")}>
+            Usuário comum
+          </ButtonType>
+          <ButtonType onClick={() => handleLink("sign-up-about-tech")}>
+            Técnico de uma empresa
+          </ButtonType>
+          <ButtonType onClick={() => handleLink("sign-up-organization")}>
+            Empresa técnica
+          </ButtonType>
         </ButtonsContainer>
       </ChooseContainer>
     </Container>

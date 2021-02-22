@@ -1,7 +1,7 @@
-import React from "react";
+import React, { useMemo, useState } from "react";
 import { Formik } from "formik";
 import { gql, useMutation } from "@apollo/client";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 
 /* Components */
 import Input from "../../components/Form/Input";
@@ -23,10 +23,11 @@ import {
 
 /* Validator */
 import { LoginValidator } from "../../validators/Form/login.validator";
+import Modal from "../../components/Modal";
 
 const LOGIN = gql`
-  mutation {
-    login(password: "12345678", email: "elson.junior9@hotmail.com") {
+  mutation Login($email: String!, $password: String!) {
+    login(password: $password, email: $email) {
       accessToken
       message
       sucess
@@ -37,53 +38,90 @@ const LOGIN = gql`
 
 const LoginPage: React.FC = () => {
   const [login /* , { data } */] = useMutation(LOGIN);
+  const history = useHistory();
+
+  const [isOpen, setIsOpen] = useState(false);
 
   const initialValues: LoginForm = { email: "", password: "" };
 
-  async function handleSubmit() {
-    const response = await login();
+  async function handleSubmit(values: LoginForm) {
+    const response = await login({
+      variables: {
+        ...values,
+      },
+    });
 
     if (response.data.login.sucess) {
       // TODO: SALVAR TOKEN
-      const { accessToken } = response.data.login;
+      const { accessToken, userRole } = response.data.login;
       console.log("accessToken", accessToken);
-      localStorage.setItem("token", accessToken);
-    } else {
-      console.log("Erro: ", response.data.login.message);
-    }
+      console.log("userRole", userRole);
 
-    console.log("response", response);
+      localStorage.setItem("token", accessToken);
+      localStorage.setItem("roles", JSON.stringify([userRole]));
+
+      history.push("app/dashboard");
+    } else {
+      console.log("Erro: ", response.data.login);
+    }
   }
 
+  function handleOnClose() {
+    setIsOpen(false);
+  }
+
+  const modalMemoized = useMemo(
+    () => (
+      <Modal isOpen={isOpen} onClose={() => handleOnClose()}>
+        <div>Hue</div>
+      </Modal>
+    ),
+    []
+  );
+
   return (
-    <Container>
-      <PageHeader>
-        <TitleHeader>Projeto Portas</TitleHeader>
-      </PageHeader>
+    <>
+      <Container>
+        <PageHeader>
+          <TitleHeader>Projeto Portas</TitleHeader>
+        </PageHeader>
 
-      <Formik initialValues={initialValues} validationSchema={LoginValidator} onSubmit={handleSubmit}>
-        <FormContainer>
-          <LegendContainer>
-            <Legend>Fazer Login</Legend>
-            <Link to="sign-up-choose">Cadastre-se</Link>
-          </LegendContainer>
+        <Formik
+          initialValues={initialValues}
+          validationSchema={LoginValidator}
+          onSubmit={handleSubmit}
+        >
+          {(formik) => (
+            <FormContainer>
+              <div>
+                <LegendContainer>
+                  <Legend>Fazer Login</Legend>
+                  <Link to="sign-up-choose">Cadastre-se</Link>
+                </LegendContainer>
 
-          <InputGroup>
-            <Input label="E-mail" id="email" name="email" required />
+                <InputGroup>
+                  <Input label="E-mail" id="email" name="email" required />
 
-            <Input
-              label="Senha"
-              id="password"
-              name="password"
-              type="password"
-              required
-            />
-          </InputGroup>
+                  <Input
+                    label="Senha"
+                    id="password"
+                    name="password"
+                    type="password"
+                    required
+                  />
+                </InputGroup>
+              </div>
 
-          <Button>Login</Button>
-        </FormContainer>
-      </Formik>
-    </Container>
+              <Button disabled={formik.isSubmitting} type="submit">
+                Login
+              </Button>
+            </FormContainer>
+          )}
+        </Formik>
+      </Container>
+
+      {modalMemoized}
+    </>
   );
 };
 

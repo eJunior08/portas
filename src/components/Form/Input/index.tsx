@@ -1,8 +1,8 @@
-import { useField } from 'formik';
-import React, { InputHTMLAttributes } from 'react';
+import { useField } from "formik";
+import React, { InputHTMLAttributes, useRef } from "react";
 
 /* Styles */
-import { Container, InputStyled, LabelStyled } from './styles';
+import { Container, InputStyled, LabelStyled } from "./styles";
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   label: string;
@@ -10,13 +10,20 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
 }
 
 const Input: React.FC<InputProps> = ({ label, ...props }) => {
-  const [field, meta] = useField(props);
+  const inputEl = useRef<HTMLInputElement>(null);
+  const [field /* , meta */] = useField(props);
+
+  function onLabelClick() {
+    inputEl.current?.focus();
+  }
 
   return (
     <Container>
-      <InputStyled {...field} {...props} autoComplete="off" />
-      <LabelStyled htmlFor={props.id || props.name}>{label}</LabelStyled>
-      {meta.touched && meta.error ? <div>{meta.error}</div> : null}
+      <InputStyled ref={inputEl} {...field} {...props} />
+      <LabelStyled onClick={onLabelClick} htmlFor={props.id || props.name}>
+        {label}
+      </LabelStyled>
+      {/* {meta.touched && meta.error ? <div>{meta.error}</div> : null} */}
     </Container>
   );
 };

@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 
 export const Container = styled.div`
   background-color: var(--color-primary);
@@ -25,6 +25,9 @@ export const TitleContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+
+  margin-bottom: 1rem;
+
   & > img {
     width: 6.9rem;
     margin-left: 1.8rem;
@@ -64,5 +67,9 @@ export const Button = styled.button`
 
   &:hover {
     background-color: var(--color-secondary-light);
+  }
+
+  @media (min-width: 1000px) {
+    width: 50rem;
   }
 `;

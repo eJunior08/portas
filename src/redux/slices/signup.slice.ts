@@ -1,27 +1,23 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice } from "@reduxjs/toolkit";
 
 const signupSlice = createSlice({
-  name: 'signup',
+  name: "signup",
   initialState: {
-    first_name: '',
-    last_name: '',
-    cpf: '',
-    phone: '',
-    endereco: '',
-    numero: '',
-    complemento: '',
-    bairro: '',
-    cidade: '',
-    cep: '',
-    email: '',
-    password: '',
+    first_name: "",
+    last_name: "",
+    cpf: "",
+    phone: "",
+    endereco: "",
+    numero: "",
+    complemento: "",
+    bairro: "",
+    cidade: "",
+    cep: "",
+    email: "",
+    password: "",
   },
   reducers: {
-    updateSignup(state, { payload }) {
-      console.log('payload', payload);
-      state = payload;
-      console.log('state', state.first_name);
-    },
+    updateSignup: (state, { payload }) => ({ ...state, ...payload }),
   },
 });
 
